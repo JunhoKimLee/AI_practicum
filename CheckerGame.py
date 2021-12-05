@@ -14,13 +14,14 @@ class CheckerGame():
         self.player2 = self.choosePlayer(2)
 
         self.play()
-        # self.printBoard() # TO BE DELETED
+        self.printBoard() # TO BE DELETED
 
     def initBoard(self):
         # Do we want 8*8 grid or 6*6 grid or let players choose?
         board = [[0]*8 for i in range(8)] 
         self.player1checkers = set()
         self.player2checkers = set()
+        self.checkerPositions = {}
 
         # place 12 checkers on the board
         for i in range(12):
@@ -28,13 +29,19 @@ class CheckerGame():
             self.player2checkers.add(-(i + 1))
             if i%3 == 0:
                 board[0][2*(i//3)+1] = -(i + 1)
+                self.checkerPositions[-(i + 1)] = (0, 2*(i//3)+1)
                 board[7][2*(i//3)] = i + 1
+                self.checkerPositions[i + 1] = (7, 2*(i//3))
             elif i%3 ==1:
                 board[1][2*(i//3)] = -(i + 1)
+                self.checkerPositions[-(i + 1)] = (1, 2*(i//3))
                 board[6][2*(i//3)+1] = i + 1
+                self.checkerPositions[i + 1] = (6, 2*(i//3)+1)
             else:
                 board[2][2*(i//3)+1] = -(i + 1)
+                self.checkerPositions[-(i + 1)] = (2, 2*(i//3)+1)
                 board[5][2*(i//3)] = i + 1 
+                self.checkerPositions[i + 1] = (5, 2*(i//3))
         return board   
 
     def choosePlayer(self, num):
@@ -46,12 +53,12 @@ class CheckerGame():
             for j in range(len(self.board[i])):
                 check = self.board[i][j]
                 if (check < 0):
-                    if (check =< -100):
+                    if (check <= -100):
                         print(' ' + 'B',end=' ')
                     else:
                         print(' ' + 'b',end=' ')
                 elif (check > 0):
-                    if (check => 100):
+                    if (check >= 100):
                         print(' ' + 'R',end=' ')
                     else:
                         print(' ' + 'r',end=' ')
@@ -62,13 +69,17 @@ class CheckerGame():
     def checkPromote(self, row, col, player):
         old_checker = self.board[row][col]
         if player==1 and row == 0 and old_checker<100:
+            self.checkerPositions.pop(old_checker)
             self.player1checkers.remove(old_checker)
             new_checker = old_checker+100
+            self.checkerPositions[new_checker] = (row,col)  
             self.board[row][col] = new_checker
             self.player1checkers.add(new_checker)
         elif player==2 and row ==7 and old_checker>-100:
+            self.checkerPositions.pop(old_checker)
             self.player2checkers.remove(old_checker)
             new_checker = old_checker-100
+            self.checkerPositions[new_checker] = (row,col)  
             self.board[row][col] = new_checker
             self.player2checkers.add(new_checker)
 
@@ -167,7 +178,8 @@ class CheckerGame():
     # Check if the player can cantinue
     def playerCanContinue(self, player):
         directions = [[-1, -1], [-1, 1], [-2, -2], [-2, 2]]
-        for checker in self.playerCheckers:
+        checkers = self.player2checkers if player==2 else self.player1checkers
+        for checker in self.checkers:
             position = self.checkerPositions[checker]
             row = position[0]
             col = position[1]
@@ -184,5 +196,7 @@ class CheckerGame():
             return (not self.playerCanContinue(1)) and (not self.playerCanContinue(2))
 
     def play(self):
+        # needs to be implemented
+        pass
     # take turns between player1 and player2 
         
