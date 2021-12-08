@@ -22,11 +22,15 @@ def main():
     clock = pygame.time.Clock()
     game = Game(WIN)
 
-    mode = input("Select Game Mode (PvC or CvC): ")
+    mode = ""
+    while mode != "PvC" and mode != "CvC":
+        mode = input("Select Game Mode (PvC or CvC): ")
     if mode == "PvC":
         mode = 0    # 0 represents PvC
-    else:
+    elif mode == "CvC":
         mode = 1    # 1 represents CvC
+    else:
+        mode = -1  # this should never happen
 
     while run:
         clock.tick(FPS)
