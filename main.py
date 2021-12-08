@@ -32,6 +32,7 @@ def main():
 
 
 def pvc(run, clock, game):
+    # currently pvc arbitrarily makes the computer play white
     while run:
         clock.tick(FPS)
 
@@ -60,7 +61,24 @@ def pvc(run, clock, game):
 
 
 def cvc(run, clock, game):
-    pass
+    while run:
+        clock.tick(FPS)
+
+        if game.winner() != None:
+            if game.winner == WHITE:
+                winner = "White"
+            else:
+                winner = "Red"
+            print("The game was won by " + winner + "!")
+            run = False
+            break
+
+        if game.turn == WHITE:
+            game.computer_move(WHITE)
+        else:
+            game.computer_move(RED)
+
+        game.update()
 
 
 main()
