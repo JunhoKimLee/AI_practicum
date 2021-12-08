@@ -2,7 +2,7 @@ from checkers.constants import RED, WHITE
 from checkers.piece import Piece
 import copy
 
-depth = 1
+depth = 3
 
 
 def minimax(board, depth, max_player):
