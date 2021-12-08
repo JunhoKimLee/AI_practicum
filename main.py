@@ -24,61 +24,46 @@ def main():
 
     mode = input("Select Game Mode (PvC or CvC): ")
     if mode == "PvC":
-        pvc(run, clock, game)    # 0 represents PvC
+        mode = 0    # 0 represents PvC
     else:
-        cvc(run, clock, game)    # 1 represents CvC
+        mode = 1    # 1 represents CvC
+
+    while run:
+        clock.tick(FPS)
+
+        if game.winner() != None:
+            if game.winner() == WHITE:
+                winner = "White"
+            elif game.winner() == RED:
+                winner = "Red"
+            else:
+                winner = "no one. It was a draw"
+            print("The game was won by " + winner + "!")
+            run = False
+            break
+
+        if mode == 0:
+            if game.turn == WHITE:
+                game.computer_move(WHITE)
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    run = False
+
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    pos = pygame.mouse.get_pos()
+                    row, col = get_row_col_from_mouse(pos)
+                    game.select(row, col)
+
+        elif mode == 1:
+            if game.turn == WHITE:
+                game.computer_move(WHITE)
+            else:
+                game.computer_move(RED)
+
+        game.update()
 
     pygame.quit()
-
-
-def pvc(run, clock, game):
-    # currently pvc arbitrarily makes the computer play white
-    while run:
-        clock.tick(FPS)
-
-        if game.winner() != None:
-            if game.winner == WHITE:
-                winner = "White"
-            else:
-                winner = "Red"
-            print("The game was won by " + winner + "!")
-            run = False
-            break
-
-        if game.turn == WHITE:
-            game.computer_move(WHITE)
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                pos = pygame.mouse.get_pos()
-                row, col = get_row_col_from_mouse(pos)
-                game.select(row, col)
-
-        game.update()
-
-
-def cvc(run, clock, game):
-    while run:
-        clock.tick(FPS)
-
-        if game.winner() != None:
-            if game.winner == WHITE:
-                winner = "White"
-            else:
-                winner = "Red"
-            print("The game was won by " + winner + "!")
-            run = False
-            break
-
-        if game.turn == WHITE:
-            game.computer_move(WHITE)
-        else:
-            game.computer_move(RED)
-
-        game.update()
 
 
 main()

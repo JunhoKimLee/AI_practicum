@@ -1,3 +1,4 @@
+from typing import Any
 import pygame
 from .constants import BLACK, ROWS, RED, SQUARE_SIZE, COLS, WHITE
 from .piece import Piece
@@ -9,6 +10,7 @@ class Board:
         self.red_left = self.white_left = 12
         self.red_kings = self.white_kings = 0
         self.create_board()
+        self.turns = 0
 
     def draw_squares(self, win):
         win.fill(BLACK)
@@ -27,6 +29,8 @@ class Board:
                 self.white_kings += 1
             else:
                 self.red_kings += 1
+
+        self.turns += 1
 
     def get_piece(self, row, col):
         return self.board[row][col]
@@ -67,6 +71,8 @@ class Board:
             return WHITE
         elif self.white_left <= 0:
             return RED
+        elif self.turns > 200:
+            return Any
 
         return None
 
