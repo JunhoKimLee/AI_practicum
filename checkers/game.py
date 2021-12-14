@@ -70,9 +70,9 @@ class Game:
     def get_board(self):
         return self.board
 
-    def computer_move(self, player):
+    def computer_move(self, player, depth):
         board = self.get_board()
-        piece, row, col = best_move(board, player)
+        piece, row, col = best_move(board, player, depth)
         self.selected = piece
         self.valid_moves = self.board.get_valid_moves(piece)
 

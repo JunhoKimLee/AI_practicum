@@ -2,8 +2,6 @@ from checkers.constants import RED, WHITE
 from checkers.piece import Piece
 import copy
 
-depth = 3
-
 
 def minimax(board, depth, max_player):
     if depth == 0 or board.winner() != None:
@@ -36,7 +34,7 @@ def minimax(board, depth, max_player):
         return min_eval
 
 
-def best_move(board, player):
+def best_move(board, player, depth):
 
     # white is the maximizer. it is inverted because the current player's first
     # move happens in this function, so the next player to go is the opponent

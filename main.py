@@ -22,15 +22,29 @@ def main():
     clock = pygame.time.Clock()
     game = Game(WIN)
 
+    # 0 indicates player. a postive int represents AI with depth of that val.
+    red = -1
+    white = -1
     mode = ""
-    while mode != "PvC" and mode != "CvC":
-        mode = input("Select Game Mode (PvC or CvC): ")
-    if mode == "PvC":
-        mode = 0    # 0 represents PvC
-    elif mode == "CvC":
-        mode = 1    # 1 represents CvC
-    else:
-        mode = -1  # this should never happen
+    while red == -1:
+        print("Select controller of Red. Type P for player. Type C followed by a # that indicates depth for the minimax bot (e.g. C3 means minimax bot with depth 3).")
+        mode = input("> ")
+        if mode == "P":
+            red = 0
+        elif mode[0] == "C":
+            depth = int(mode[1:])
+            if depth >= 1:
+                red = depth
+
+    while white == -1:
+        print("Select controller of White. Type P for player. Type C followed by a # that indicates depth for the minimax bot (e.g. C3 means minimax bot with depth 3).")
+        mode = input("> ")
+        if mode == "P":
+            white = 0
+        elif mode[0] == "C":
+            depth = int(mode[1:])
+            if depth >= 1:
+                white = depth
 
     while run:
         clock.tick(FPS)
@@ -46,24 +60,31 @@ def main():
             run = False
             break
 
-        if mode == 0:
-            if game.turn == WHITE:
-                game.computer_move(WHITE)
+        if game.turn == RED:
+            if red == 0:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        run = False
 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    run = False
-
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    pos = pygame.mouse.get_pos()
-                    row, col = get_row_col_from_mouse(pos)
-                    game.select(row, col)
-
-        elif mode == 1:
-            if game.turn == WHITE:
-                game.computer_move(WHITE)
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        pos = pygame.mouse.get_pos()
+                        row, col = get_row_col_from_mouse(pos)
+                        game.select(row, col)
             else:
-                game.computer_move(RED)
+                game.computer_move(RED, red)
+
+        elif game.turn == WHITE:
+            if white == 0:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        run = False
+
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        pos = pygame.mouse.get_pos()
+                        row, col = get_row_col_from_mouse(pos)
+                        game.select(row, col)
+            else:
+                game.computer_move(WHITE, white)
 
         game.update()
 
