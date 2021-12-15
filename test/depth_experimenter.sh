@@ -4,8 +4,11 @@
 rm -f output.csv
 OUTPUT=output.csv
 
-MAX_DEPTH=2
-MAX_ITER=1
+RED_H=1
+WHITE_H=0
+
+MAX_DEPTH=3
+MAX_ITER=20
 
 for r in $(seq 1 $MAX_DEPTH)
 do
@@ -17,8 +20,10 @@ WHITE=0
 DRAW=0
 for i in $(seq 1 $MAX_ITER)
 do
+declare -i red_code=$RED_H*10+$r
+declare -i white_code=$WHITE_H*10+$w
 
-WINNER=$(python3 ../main.py $r $w)
+WINNER=$(python3 ../main.py $red_code $white_code)
 WINNER=${WINNER: -2:1}
 
 #echo $WINNER
@@ -37,10 +42,12 @@ fi
 done
 
 # write to file
-echo $r, $w, $RED, $WHITE, $DRAW >> $OUTPUT
+echo $r, $RED_H, $w, $WHITE_H, $RED, $WHITE, $DRAW >> $OUTPUT
 
 echo "RED DEPTH:" $r
-echo "WHITE DEPTH:" $w 
+echo "RED HEURISTIC:" $RED_H
+echo "WHITE DEPTH:" $w
+echo "WHITE HEURISTIC:" $WHITE_H
 echo RED: $RED
 echo WHITE: $WHITE
 echo DRAW: $DRAW

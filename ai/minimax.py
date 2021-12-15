@@ -4,9 +4,12 @@ import copy
 import random
 
 
-def minimax(board, depth, max_player):
+def minimax(board, depth, max_player, h):
     if depth == 0 or board.winner() != None:
-        return board.evaluate()
+        if h == 0:
+            return board.evaluate()
+        elif h == 1:
+            return board.evaluate1()
 
     if max_player:
         max_eval = float('-inf')
@@ -17,7 +20,7 @@ def minimax(board, depth, max_player):
                 new_board.move(new_piece, row, col)
                 if skip:
                     new_board.remove(skip)
-                eval = minimax(new_board, depth-1, False)
+                eval = minimax(new_board, depth-1, False, h)
                 max_eval = max(max_eval, eval)
         return max_eval
 
@@ -30,12 +33,20 @@ def minimax(board, depth, max_player):
                 new_board.move(new_piece, row, col)
                 if skip:
                     new_board.remove(skip)
-                eval = minimax(new_board, depth-1, True)
+                eval = minimax(new_board, depth-1, True, h)
                 min_eval = min(min_eval, eval)
         return min_eval
 
 
-def best_move(board, player, depth):
+def best_move(board, player, heuristic):
+
+    # first break down heuristic into heuristic # and depth
+    if heuristic < 10:
+        h = 0
+        depth = heuristic
+    else:
+        h = int((heuristic - (heuristic % 10))/10)
+        depth = heuristic % 10
 
     # white is the maximizer. it is inverted because the current player's first
     # move happens in this function, so the next player to go is the opponent
@@ -62,7 +73,7 @@ def best_move(board, player, depth):
             new_board.move(new_piece, row, col)
             if skip:
                 new_board.remove(skip)
-            val = minimax(new_board, depth-1, max_player)
+            val = minimax(new_board, depth-1, max_player, h)
 
             # need to min or max depending on player color
             if player == WHITE:

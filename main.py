@@ -23,23 +23,31 @@ def main():
     clock = pygame.time.Clock()
     game = Game(WIN)
 
-    # 0 indicates player. a postive int represents AI with depth of that val.
+    # 0 indicates player. a postive single-digit int represents AI with depth of that val.
+    # A double-digit int represents an AI with custom heuristic. If the digit is `XY`, it means heuristic X at depth Y.
     try:
         red = int(sys.argv[1])
         white = int(sys.argv[2])
     except:
         print("Input var(s) is not a valid int.")
         quit()
-    if red < 0 or white < 0:
+    if red < 0 or white < 0 or red > 99 or white > 99:
         print("Input var(s) is out of range.")
         quit()
 
+    # print info to player for visual clarity
     if red == 0:
         print("Red is a human player.")
+    elif red >= 10:
+        print("Red is an AI with custom heuristic #" + str(red)
+              [:-1] + " at depth " + str(red)[1:] + ".")
     else:
         print("Red is an AI minimax with depth " + str(red) + ".")
     if white == 0:
         print("White is a human player.")
+    elif white >= 10:
+        print("White is an AI with custom heuristic #" + str(white)
+              [:-1] + " at depth " + str(white)[1:] + ".")
     else:
         print("White is an AI minimax with depth " + str(white) + ".")
 

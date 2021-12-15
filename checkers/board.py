@@ -181,4 +181,68 @@ class Board:
         if self.turns > 200:
             return 0
         # white maximizes
-        return self.white_kings + self.white_left - self.red_left - self.red_kings
+        return self.white_left - self.red_left + self.white_kings - self.red_kings
+
+    def evaluate1(self):
+        # a draw leads to a board state of 0
+        if self.turns > 200:
+            return 0
+
+        # calculate move flexibility- how many moves remain open
+        white_moves = 0
+        for piece in self.get_valid_pieces(WHITE):
+            for _ in self.get_valid_moves(piece):
+                white_moves += 1
+        red_moves = 0
+        for piece in self.get_valid_pieces(RED):
+            for _ in self.get_valid_moves(piece):
+                red_moves += 1
+
+        # calculate board control- the number of squares that are threatened by
+        # my pieces
+        white_squares = set()
+        for piece in self.get_valid_pieces(WHITE):
+            for (row, col), _ in self.get_valid_moves(piece).items():
+                white_squares.add((row, col))
+        white_control = len(white_squares)
+        red_squares = set()
+        for piece in self.get_valid_pieces(RED):
+            for (row, col), _ in self.get_valid_moves(piece).items():
+                red_squares.add((row, col))
+        red_control = len(red_squares)
+
+        # calculate home row strength- how many of my pieces remain in the home
+        # row
+        white_home = 0
+        for piece in self.get_valid_pieces(WHITE):
+            if piece.row == 0:
+                white_home += 1
+        red_home = 0
+        for piece in self.get_valid_pieces(RED):
+            if piece.row == ROWS - 1:
+                red_home += 1
+
+        # calculate vulnerability- the number of pieces undefended
+        undefended_white = set()
+        for piece in self.get_valid_pieces(RED):
+            for (row, col), skip in self.get_valid_moves(piece).items():
+                if skip:
+                    for s in skip:
+                        undefended_white.add(s)
+        white_vuln = len(undefended_white)
+        undefended_red = set()
+        for piece in self.get_valid_pieces(WHITE):
+            for (row, col), skip in self.get_valid_moves(piece).items():
+                if skip:
+                    for s in skip:
+                        undefended_red.add(s)
+        red_vuln = len(undefended_red)
+
+        return (
+            (self.white_left - self.red_left)/1 +
+            (self.white_kings - self.red_kings)/2 +
+            (white_moves - red_moves)/4 +
+            (white_control - red_control)/2 +
+            (red_vuln - white_vuln)/4 +
+            (white_home - red_home)/4
+        )
