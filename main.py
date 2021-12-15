@@ -35,6 +35,15 @@ def main():
         print("Input var(s) is out of range.")
         quit()
 
+    # attempt to get heuristic param inputs
+    try:
+        h_params = []
+        for i in range(3, 8):
+            h_params.append(int(sys.argv[i]))
+    except:
+        print("No custom params. Using default.")
+        h_params = [2, 4, 2, 4, 4]
+
     # print info to player for visual clarity
     if red == 0:
         print("Red is a human player.")
@@ -79,7 +88,7 @@ def main():
                         row, col = get_row_col_from_mouse(pos)
                         game.select(row, col)
             else:
-                game.computer_move(RED, red)
+                game.computer_move(RED, red, h_params)
 
         elif game.turn == WHITE:
             if white == 0:
@@ -92,7 +101,7 @@ def main():
                         row, col = get_row_col_from_mouse(pos)
                         game.select(row, col)
             else:
-                game.computer_move(WHITE, white)
+                game.computer_move(WHITE, white, h_params)
 
         game.update()
 

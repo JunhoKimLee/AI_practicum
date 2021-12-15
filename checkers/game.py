@@ -70,10 +70,10 @@ class Game:
     def get_board(self):
         return self.board
 
-    def computer_move(self, player, heuristic):
+    def computer_move(self, player, heuristic, parameters):
 
         board = self.get_board()
-        piece, row, col = best_move(board, player, heuristic)
+        piece, row, col = best_move(board, player, heuristic, parameters)
         self.selected = piece
         self.valid_moves = self.board.get_valid_moves(piece)
 

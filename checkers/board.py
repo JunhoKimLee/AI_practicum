@@ -183,7 +183,7 @@ class Board:
         # white maximizes
         return self.white_left - self.red_left + self.white_kings - self.red_kings
 
-    def evaluate1(self):
+    def evaluate1(self, params):
         # a draw leads to a board state of 0
         if self.turns > 200:
             return 0
@@ -240,9 +240,9 @@ class Board:
 
         return (
             (self.white_left - self.red_left)/1 +
-            (self.white_kings - self.red_kings)/2 +
-            (white_moves - red_moves)/4 +
-            (white_control - red_control)/2 +
-            (red_vuln - white_vuln)/4 +
-            (white_home - red_home)/4
+            (self.white_kings - self.red_kings)*params[0]/4 +
+            (white_moves - red_moves)*params[1]/4 +
+            (white_control - red_control)*params[2]/4 +
+            (red_vuln - white_vuln)*params[3]/4 +
+            (white_home - red_home)*params[4]/4
         )

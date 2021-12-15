@@ -5,3 +5,4 @@ Run `python3 main.py` followed two ints to play checkers. Only two ints are acce
 Run `make zip` to zip the program.
 To run the test file, enter the `test` directory and run `./depth_experimenter.sh`.
 The `output.csv` file contains rows with 5 values. In order, they represent red depth, red heuristic #, white depth, white hueristic #, red wins, white wins, and draws for the number of simulations ran at that depth.
+`parameter_finder.sh` is used to calculate optimal tuning parameters for the AI minimax algorithm with custom heuristics. The `output.csv` file it produces contains rows where each row corresponds to the 5 heuristic values in order followed by the score. The last line has the optimal heuristics and the best score that it produces.

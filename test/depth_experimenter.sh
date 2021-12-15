@@ -23,7 +23,7 @@ do
 declare -i red_code=$RED_H*10+$r
 declare -i white_code=$WHITE_H*10+$w
 
-WINNER=$(python3 ../main.py $red_code $white_code)
+WINNER=$(python3 ../main.py $red_code $white_code 2 1 2 3 2)
 WINNER=${WINNER: -2:1}
 
 #echo $WINNER
