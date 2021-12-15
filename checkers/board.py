@@ -24,11 +24,12 @@ class Board:
         piece.move(row, col)
 
         if row == ROWS - 1 or row == 0:
-            piece.make_king()
-            if piece.color == WHITE:
-                self.white_kings += 1
-            else:
-                self.red_kings += 1
+            if not piece.king:
+                piece.make_king()
+                if piece.color == WHITE:
+                    self.white_kings += 1
+                else:
+                    self.red_kings += 1
 
         self.turns += 1
 
@@ -71,6 +72,7 @@ class Board:
             return WHITE
         elif self.white_left <= 0:
             return RED
+        # if turns exceeds 200, it is a draw
         elif self.turns > 200:
             return Any
 
@@ -175,5 +177,8 @@ class Board:
         return all_pieces
 
     def evaluate(self):
+        # a draw leads to a board state of 0
+        if self.turns > 200:
+            return 0
         # white maximizes
         return self.white_kings + self.white_left - self.red_left - self.red_kings

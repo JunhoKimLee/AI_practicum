@@ -71,13 +71,14 @@ class Game:
         return self.board
 
     def computer_move(self, player, depth):
+
         board = self.get_board()
         piece, row, col = best_move(board, player, depth)
         self.selected = piece
         self.valid_moves = self.board.get_valid_moves(piece)
 
         # condition if no move was possible, then they auto-lose
-        if not self._move(row, col):
+        if row == -9 and col == -9 or not self._move(row, col):
             if player == WHITE:
                 board.white_left = 0
             else:

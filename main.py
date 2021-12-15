@@ -2,6 +2,7 @@
 import pygame
 from checkers.constants import WIDTH, HEIGHT, SQUARE_SIZE, RED, WHITE
 from checkers.game import Game
+import sys
 
 FPS = 60
 
@@ -23,28 +24,24 @@ def main():
     game = Game(WIN)
 
     # 0 indicates player. a postive int represents AI with depth of that val.
-    red = -1
-    white = -1
-    mode = ""
-    while red == -1:
-        print("Select controller of Red. Type P for player. Type C followed by a # that indicates depth for the minimax bot (e.g. C3 means minimax bot with depth 3).")
-        mode = input("> ")
-        if mode == "P":
-            red = 0
-        elif mode[0] == "C":
-            depth = int(mode[1:])
-            if depth >= 1:
-                red = depth
+    try:
+        red = int(sys.argv[1])
+        white = int(sys.argv[2])
+    except:
+        print("Input var(s) is not a valid int.")
+        quit()
+    if red < 0 or white < 0:
+        print("Input var(s) is out of range.")
+        quit()
 
-    while white == -1:
-        print("Select controller of White. Type P for player. Type C followed by a # that indicates depth for the minimax bot (e.g. C3 means minimax bot with depth 3).")
-        mode = input("> ")
-        if mode == "P":
-            white = 0
-        elif mode[0] == "C":
-            depth = int(mode[1:])
-            if depth >= 1:
-                white = depth
+    if red == 0:
+        print("Red is a human player.")
+    else:
+        print("Red is an AI minimax with depth " + str(red) + ".")
+    if white == 0:
+        print("White is a human player.")
+    else:
+        print("White is an AI minimax with depth " + str(white) + ".")
 
     while run:
         clock.tick(FPS)
@@ -58,7 +55,10 @@ def main():
                 winner = "no one. It was a draw"
             print("The game was won by " + winner + "!")
             run = False
-            break
+            return winner
+
+        # uncomment this to go through AI games move by move
+        # mode = input()
 
         if game.turn == RED:
             if red == 0:
