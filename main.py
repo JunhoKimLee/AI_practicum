@@ -2,6 +2,7 @@
 import pygame
 from checkers.constants import WIDTH, HEIGHT, SQUARE_SIZE, RED, WHITE
 from checkers.game import Game
+import os
 import sys
 
 FPS = 60
@@ -18,7 +19,6 @@ def get_row_col_from_mouse(pos):
 
 
 def main():
-
     run = True
     clock = pygame.time.Clock()
     game = Game(WIN)

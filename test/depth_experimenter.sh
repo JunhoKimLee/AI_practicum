@@ -1,6 +1,11 @@
 # This script runs through different depths for R and W and simulates games
-MAX_DEPTH=3
-MAX_ITER=2
+
+# clear output file
+rm -f output.csv
+OUTPUT=output.csv
+
+MAX_DEPTH=2
+MAX_ITER=1
 
 for r in $(seq 1 $MAX_DEPTH)
 do
@@ -13,7 +18,7 @@ DRAW=0
 for i in $(seq 1 $MAX_ITER)
 do
 
-WINNER=$(python3 main.py $r $w)
+WINNER=$(python3 ../main.py $r $w)
 WINNER=${WINNER: -2:1}
 
 #echo $WINNER
@@ -30,6 +35,9 @@ DRAW=$((DRAW+1))
 fi
 
 done
+
+# write to file
+echo $r, $w, $RED, $WHITE, $DRAW >> $OUTPUT
 
 echo "RED DEPTH:" $r
 echo "WHITE DEPTH:" $w 
