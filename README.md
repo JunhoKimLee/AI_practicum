@@ -32,7 +32,6 @@ The base heuristic takes into account the following factors when evaluating the 
 * Piece advantage - how many pieces each player has
 * King advantage - how many kings each player has
 
----
 
 The custom heuristic additionally takes into account the following factors:
 
