@@ -2,7 +2,7 @@
 
 Welcome to the Practicum Repo for the Fall 2021 AI 4701 Course. Authored by Yoona Chang, Junho Kim-Lee and Ashley Park.
 
-This repo contains an AI checkers program that supports player v player, player v computer and computer v computer game modes. The computer can utilize either a minimax algorithm with customizable depth or a different minimax algorithm with custom-buitl heuristics, designed to make it smarter with less computational time.
+This repo contains an AI checkers program that supports player v player, player v computer and computer v computer game modes. The computer can utilize either a minimax algorithm with customizable depth or a different minimax algorithm with custom-built heuristics, designed to make it smarter with less computational time.
 
 ### How to Play
 
